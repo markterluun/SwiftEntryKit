@@ -538,6 +538,7 @@ extension EKContentView {
         notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardDidChangeFrame(_:)), name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
     }
 
     private func animate(by userInfo: [AnyHashable: Any]?, entrance: Bool) {
@@ -585,6 +586,13 @@ extension EKContentView {
     }
     
     @objc func keyboardWillChangeFrame(_ notification: Notification) {
+        guard containsFirstResponder else {
+            return
+        }
+        animate(by: notification.userInfo, entrance: true)
+    }
+    
+    @objc func keyboardDidChangeFrame(_ notification: Notification) {
         guard containsFirstResponder else {
             return
         }
